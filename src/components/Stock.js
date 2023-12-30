@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "chart.js/auto";
+import $ from "jquery";
 
 import stockDataLocal from "./stockData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -60,12 +61,34 @@ const Stock = ({ itemsPerPage }) => {
     }
   };
 
+  $(document).ready(function () {
+    $("#searchInput").on("keyup", function () {
+      var searchText = $(this).val().toLowerCase();
+
+      $("#dataTable tbody tr").each(function () {
+        var rowText = $(this).text().toLowerCase();
+        $(this).toggle(rowText.includes(searchText));
+      });
+    });
+  });
+
   return (
     <div>
       <h1 className="my-3">Stock Dashboard</h1>
-      <div></div>
       <div>
-        <table className="table table-striped my-4" style={tableStyle}>
+        <input
+          className="form-control w-25 ms-5"
+          type="text"
+          id="searchInput"
+          placeholder="Stock Name"
+        />
+      </div>
+      <div>
+        <table
+          id="dataTable"
+          className="table table-striped my-4"
+          style={tableStyle}
+        >
           <thead className="thead-dark py-5">
             <th>stock</th>
             <th>volumne</th>
